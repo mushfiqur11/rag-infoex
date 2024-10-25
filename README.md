@@ -1,1 +1,4 @@
-# rag-tutorial-v2
+### NRL Rag Pipeline
+
+For GMU hopper server:
+    1. Run setup.sh
