@@ -1,6 +1,7 @@
 #!/bin/bash
 task=${task:-install_rag_pipeline}
 host=${host:-own}
+llm=${llm:-microsoft/Phi-3-mini-4k-instruct}
 
 while [ $# -gt 0 ]; do
 
@@ -15,7 +16,7 @@ done
 
 if [[ "$host" = "hopper" ]]; then
 	echo "Installing virtual env on hopper"
-	if [[ "$task" = "install_rag_pipeline" ]]; then
+	if [ "$task" = "install_rag_pipeline" ] || [ "$task" = "all" ]; then
 		module load gnu10/10.3.0-ya
 		module avail python
 		module load python/3.10.1-5r
@@ -32,7 +33,7 @@ fi
 
 if [[ "$host" = "own" ]]; then
 	echo "Installing system requirements and env"
-	if [[ "$task" = "install_rag_pipeline" ]]; then
+	if [ "$task" = "install_rag_pipeline" ] || [ "$task" = "all" ]; then
 		rm -rfd vnv/info_ex
 		python -m venv vnv/info_ex
 		source vnv/info_ex/bin/activate
@@ -42,3 +43,8 @@ if [[ "$host" = "own" ]]; then
 		pip install -r requirements.txt
 	fi
 fi
+
+if [ "$task" = "download_llm" ] || [ "$task" = "all" ]; then
+	python src/download_llm.py --model_id ${llm}
+fi
+
